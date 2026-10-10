@@ -76,7 +76,7 @@ class ProjectSeeder extends Seeder
                 'description' => 'Aplikasi desain cover dan branding berbasis adobe illustrator
                  untuk keperluan promosi dan identitas visual',
                 'teknologi' => 'Adobe Illustrator',
-                'image' => 'project1.jpg',
+                'image' => 'project8.jpg',
                 'status' => 'selesai',
             ],
         ];
