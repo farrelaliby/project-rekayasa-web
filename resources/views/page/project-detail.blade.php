@@ -8,7 +8,7 @@
 
     {{-- Tombol kembali --}}
     <div class="mb-4">
-        <a href="{{ route('project.index') }}"
+        <a href="{{ route('project') }}"
            class="btn btn-outline-secondary">
             &larr; Kembali ke Daftar Project
         </a>
@@ -134,7 +134,7 @@
 
             {{-- Tombol bawah --}}
             <div class="mt-4">
-                <a href="{{ route('project.index') }}"
+                <a href="{{ route('project') }}"
                    class="btn btn-primary">
                     Kembali ke Daftar Project
                 </a>

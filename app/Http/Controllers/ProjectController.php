@@ -13,9 +13,9 @@ class ProjectController extends Controller
         return view('page.project', compact('projects'));
     }
 
-    public function show($sid)
+    public function show($id)
     {
-        $project = Project::findOrFail($sid);
+        $project = Project::findOrFail($id);
         return view('page.project-detail', compact('project'));
     }
 }

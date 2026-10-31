@@ -1,0 +1,74 @@
+@extends('admin.template')
+
+@section('content')
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between mb-3 py-3">
+            <h3>Data Project</h3>
+            <a href="{{ route('projects.create') }}" class="btn btn-primary">Tambah Project</a>
+        </div>
+    </div>
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered" id="table-projects">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Teknologi</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($projects as $project)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>
+                                @if($project->image)
+                                    <!-- Diarahkan ke folder 'gambar' -->
+                                    <img src="{{ asset('gambar/' . $project->image) }}" alt="{{ $project->title }}"
+                                        class="img-thumbnail" style="width: 100px">
+                                @else
+                                    <span>No Image</span>
+                                @endif
+                            </td>
+                            <td>{{ $project->title }}</td>
+                            <td>{{ $project->teknologi }}</td>
+                            <td>{{ $project->description }}</td>
+                            <td>
+                               {{ $project->status }}
+                            </td>
+                            <td>
+                                <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Anda yakin ingin menghapus project ini?')">Hapus</button>    
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#table-projects').DataTable();
+    });
+</script>
+@endsection
