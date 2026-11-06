@@ -20,8 +20,7 @@
         left: 0;
         background-color: #343a40;
         color: #fff;
-        /* Ubah padding-top dari 70px ke 100px atau 120px agar menu turun lebih kebawah */
-        padding-top: 110px; 
+        padding-top: 150px; /* Jarak pas di bawah navbar */
         z-index: 1000;
     }
 
@@ -29,22 +28,21 @@
         color: #fff;
         padding: 12px 20px;
         font-weight: 500;
-        margin-bottom: 5px; /* Memberi sedikit jarak antar menu */
+        margin-bottom: 5px;
     }
 
     .admin-sidebar .nav-link:hover,
     .admin-sidebar .nav-link.active {
         background-color: #495057;
         color: #fff;
-        border-radius: 4px; /* Memberikan sudut tumpul halus pada menu aktif/hover */
+        border-radius: 4px;
     }
 
     .admin-content {
         margin-left: 250px;
         padding: 30px;
         margin-top: 60px;
-        /* Perbaikan rumus calc() min-height */
-        min-height: calc(100vh - 60px); 
+        min-height: calc(100vh - 60px); /* Diperbaiki secara bersih */
         display: flex;
         flex-direction: column;
     }
@@ -80,8 +78,24 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark fw-semibold" href="{{ route('home') }}" target="_blank">Lihat Website</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-danger fw-semibold" href="{{ route('contact') }}">Logout</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-danger fw-semibold" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ auth()->user()->name ?? 'Administrator' }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <span class="dropdown-item-text text-muted">
+                                    <small>{{ Auth::user()->email ?? '' }}</small>
+                                </span>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('admin.logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -90,15 +104,15 @@
 
     <!-- Sidebar Kiri -->
     <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3">
-        <h4 class="text-white text-center mb-4">Panel Admin</h4>
-        <ul class="nav nav-pills flex-column mb-auto">
+    <h5 class="bg-danger text-white text-center p-2 rounded mb-4">Admin Menu</h5>
+    <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item mb-1">
                 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     Dashboard
                 </a>
             </li>
             <li class="nav-item mb-1">
-                <a href="{{ route('projects.index') }}" class="nav-link {{ request()->routeIs('projects.index') ? 'active' : '' }}">
+                <a href="{{ route('projects.index') }}" class="nav-link {{ request()->routeIs('projects.index*') ? 'active' : '' }}">
                     Data Project
                 </a>
             </li>
@@ -119,7 +133,7 @@
         </footer>
     </div>
 
-    <!-- URUTAN JS YANG BENAR: jQuery -> Bootstrap -> DataTables -->
+    <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="{{ asset('bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdn.datatables.net/2.3.8/js/dataTables.min.js"></script>

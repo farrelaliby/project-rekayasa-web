@@ -17,12 +17,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        //User::factory()->create([
-        //    'name' => 'Test User',
-        //    'email' => 'test@example.com',
-        //]);
-        $this->call([
-            ProjectSeeder::class,
+        User::factory()->create([
+          'name' => 'Administrator',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
         ]);
+        // $this->call([
+        //     ProjectSeeder::class,
+        // ]);
     }
 }

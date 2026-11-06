@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AdminProjectController;
+use App\Http\Controllers\Auth\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,10 +39,14 @@ Route::post('/contact', function () {
     return redirect()->route('contact')->with('success', 'Pesan berhasil dikirim!');
 })->name('contact.submit');
 
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
 // Admin Routes Group
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', function () {
-        return view('admin.template');
+        return view('admin.dashboard');
     })->name('admin.dashboard');
 
     Route::resource('projects', AdminProjectController::class);
