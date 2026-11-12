@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminProjectController extends Controller
 {
@@ -102,5 +103,12 @@ class AdminProjectController extends Controller
     {
         $project = Project::findOrFail($id);
         return view('admin.projects.edit', compact('project'));
+    }
+
+    public function cetakPdf()
+    {
+        $projects = Project::all();
+        $pdf = PDF::loadView('admin.projects.pdf', compact('projects'));
+        return $pdf->stream('projects.pdf');
     }
 }

@@ -5,7 +5,10 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between mb-3 py-3">
             <h3>Data Project</h3>
-            <a href="{{ route('projects.create') }}" class="btn btn-primary">Tambah Project</a>
+            <header class="justify-content-end">
+                <a href="{{ route('projects.create') }}" class="btn btn-primary">Tambah Project</a>
+                <a href="{{ route('projects.pdf') }}" class="btn btn-danger">Cetak PDF</a>
+            </header>
         </div>
     </div>
     @if(session('success'))

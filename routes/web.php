@@ -49,5 +49,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    Route::get('/projects/pdf', [AdminProjectController::class, 'cetakPdf'])->name('projects.pdf');
     Route::resource('projects', AdminProjectController::class);
 });
