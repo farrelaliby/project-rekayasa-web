@@ -7,6 +7,9 @@
     <title>@yield('admin_web_profile', 'Admin Dashboard')</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-5.3.8-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css">
+    <script>
+        const API_TOKEN = "{{ session('api_token') }}";
+    </script>
     <style>
     body {
         background-color: #f8f9fa;
