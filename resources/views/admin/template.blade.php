@@ -11,62 +11,61 @@
         const API_TOKEN = "{{ session('api_token') }}";
     </script>
     <style>
-    body {
-        background-color: #f8f9fa;
-    }
+        body {
+            background-color: #f8f9fa;
+        }
 
-    .admin-sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #343a40;
-        color: #fff;
-        padding-top: 150px; /* Jarak pas di bawah navbar */
-        z-index: 1000;
-    }
-
-    .admin-sidebar .nav-link {
-        color: #fff;
-        padding: 12px 20px;
-        font-weight: 500;
-        margin-bottom: 5px;
-    }
-
-    .admin-sidebar .nav-link:hover,
-    .admin-sidebar .nav-link.active {
-        background-color: #495057;
-        color: #fff;
-        border-radius: 4px;
-    }
-
-    .admin-content {
-        margin-left: 250px;
-        padding: 30px;
-        margin-top: 60px;
-        min-height: calc(100vh - 60px); /* Diperbaiki secara bersih */
-        display: flex;
-        flex-direction: column;
-    }
-
-    @media (max-width: 768px) {
         .admin-sidebar {
-            width: 100%;
-            position: relative;
-            height: auto;
-            padding-top: 20px;
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 150px;
+            z-index: 1000;
+        }
+
+        .admin-sidebar .nav-link {
+            color: #fff;
+            padding: 12px 20px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            background-color: #495057;
+            color: #fff;
+            border-radius: 4px;
         }
 
         .admin-content {
-            margin-left: 0;
+            margin-left: 250px;
+            padding: 30px;
+            margin-top: 60px;
+            min-height: calc(100vh - 60px);
+            display: flex;
+            flex-direction: column;
         }
-    }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                padding-top: 20px;
+            }
+
+            .admin-content {
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <!-- Navbar Atas -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-warning fixed-top shadow-sm px-3">
         <div class="container-fluid">
@@ -107,8 +106,8 @@
 
     <!-- Sidebar Kiri -->
     <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3">
-    <h5 class="bg-danger text-white text-center p-2 rounded mb-4">Admin Menu</h5>
-    <ul class="nav nav-pills flex-column mb-auto">
+        <h5 class="bg-danger text-white text-center p-2 rounded mb-4">Admin Menu</h5>
+        <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item mb-1">
                 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     Dashboard
@@ -117,6 +116,11 @@
             <li class="nav-item mb-1">
                 <a href="{{ route('projects.index') }}" class="nav-link {{ request()->routeIs('projects.index*') ? 'active' : '' }}">
                     Data Project
+                </a>
+            </li>
+            <li class="nav-item mb-1">
+                <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
+                    Data Users
                 </a>
             </li>
         </ul>
@@ -140,7 +144,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="{{ asset('bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdn.datatables.net/2.3.8/js/dataTables.min.js"></script>
-    
+
     @yield('scripts')
 </body>
 

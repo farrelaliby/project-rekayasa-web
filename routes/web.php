@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AdminProjectController;
+use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::get('/profile', function () {
         'kampus' => 'Universitas Pamulang',
         'status' => 'Aktif',
     ];
+
     return view('page.profile', compact('mahasiswa'));
 })->name('profile');
 
@@ -39,9 +41,13 @@ Route::post('/contact', function () {
     return redirect()->route('contact')->with('success', 'Pesan berhasil dikirim!');
 })->name('contact.submit');
 
+// Auth Admin
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+// Rute Data Users (di luar middleware auth agar tidak redirect ke login saat dibuka)
+Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 
 // Admin Routes Group
 Route::prefix('admin')->middleware('auth')->group(function () {
@@ -51,4 +57,5 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/projects/pdf', [AdminProjectController::class, 'cetakPdf'])->name('projects.pdf');
     Route::resource('projects', AdminProjectController::class);
-});
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+}); 

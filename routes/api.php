@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AdminAuthController::class, 'loginApi']);
+Route::get('/users-list', [UserController::class, 'getData'])->name('list-users');
 Route::post('register', [AdminAuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User; // Perbaikan: Import Model User
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash; // Perbaikan: Import Hash untuk password
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AdminAuthController extends Controller
@@ -19,14 +19,20 @@ class AdminAuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $credentials =$request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
+        if (Auth::attempt($credentials)) {$request->session()->regenerate();
+
+            /** @var \App\Models\User $user */$user = Auth::user();
+            if (method_exists($user, 'createToken')) {
+                $token =$user->createToken('web_admin_token')->plainTextToken;
+                session(['api_token' => $token]);
+            }
+
+            return redirect()->intended(route('admin.dashboard'));
         }
 
         return back()->withErrors([
@@ -36,9 +42,13 @@ class AdminAuthController extends Controller
 
     public function logout(Request $request)
     {
+        /** @var \App\Models\User|null $user */$user = Auth::user();
+        if ($user && session('api_token') && method_exists($user, 'tokens')) {$user->tokens()->where('name', 'web_admin_token')->delete();
+        }
+
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session()->invalidate();$request->session()->regenerateToken();
+
         return redirect()->route('admin.login');
     }
 
@@ -51,7 +61,7 @@ class AdminAuthController extends Controller
             'password' => 'required|string|confirmed',
         ]);
 
-        if ($validator->fails()) { 
+        if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
@@ -62,7 +72,7 @@ class AdminAuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $token =$user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'success' => true,
@@ -71,7 +81,6 @@ class AdminAuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ], 201);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -84,21 +93,21 @@ class AdminAuthController extends Controller
     // API Login
     public function loginApi(Request $request)
     {
-        $credentials = $request->validate([
+        $credentials =$request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email',$request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password,$user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Email atau password salah',
             ], 401);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token =$user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login berhasil',
@@ -111,8 +120,8 @@ class AdminAuthController extends Controller
                 'phone' => $user->phone ?? null,
                 'address' => $user->address ?? null,
                 'role' => $user->role ?? null,
-            ]
-        ]); // Perbaikan: Mengubah titik dua (:) menjadi titik koma (;)
+            ],
+        ]);
     }
 
     // API Logout
